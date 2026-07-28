@@ -1,0 +1,10 @@
+import Link from "next/link";
+import { Header } from "@/components/header";
+import { formatViews, getVideo } from "@/lib/api";
+
+export default async function WatchPage({ params }: PageProps<"/watch/[id]">) {
+  const { id } = await params;
+  const video = await getVideo(id);
+  if (!video) return <div className="min-h-screen bg-[#08080a] text-white"><Header /><main className="mx-auto max-w-3xl px-5 py-20"><h1 className="text-3xl font-bold">Video not found</h1><Link className="mt-5 inline-block text-indigo-300" href="/">Return home</Link></main></div>;
+  return <div className="min-h-screen bg-[#08080a] text-white"><Header /><main className="mx-auto max-w-6xl px-5 py-8 sm:px-8 lg:px-10"><div className="aspect-video overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500/50 via-violet-950 to-[#14141a]"><div className="grid h-full place-items-center"><button className="grid h-18 w-18 place-items-center rounded-full bg-white text-2xl text-black shadow-2xl transition hover:scale-105" aria-label="Play video">▶</button></div></div><section className="mt-6 max-w-4xl"><h1 className="text-2xl font-bold sm:text-3xl">{video.title}</h1><div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5"><p className="text-sm text-zinc-400">{formatViews(video.view_count)} views</p><button className="rounded-full border border-white/15 px-4 py-2 text-sm font-medium hover:bg-white/10">♡ Like</button></div><div className="mt-6 flex items-center gap-3"><div className="grid h-11 w-11 place-items-center rounded-full bg-indigo-400/20 font-bold text-indigo-200">{video.author.username.charAt(0)}</div><div><p className="font-semibold">{video.author.username}</p><p className="text-sm text-zinc-400">Creator</p></div></div>{video.description && <p className="mt-5 max-w-2xl whitespace-pre-wrap text-zinc-300">{video.description}</p>}<div className="mt-10 border-t border-white/10 pt-7"><h2 className="text-lg font-semibold">Comments</h2><p className="mt-3 text-sm text-zinc-500">Sign in to join the conversation.</p></div></section></main></div>;
+}

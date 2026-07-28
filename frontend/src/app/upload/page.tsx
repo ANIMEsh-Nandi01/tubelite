@@ -1,0 +1,12 @@
+"use client";
+
+import Link from "next/link";
+import { FormEvent, useState } from "react";
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+
+export default function UploadPage() {
+  const [status, setStatus] = useState("");
+  async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setStatus("Uploading…"); try { const response = await fetch(`${apiUrl}/api/videos`, { method: "POST", credentials: "include", body: new FormData(event.currentTarget) }); if (!response.ok) throw new Error((await response.json() as { detail?: string }).detail ?? "Upload failed"); setStatus("Upload complete. Your video is ready."); event.currentTarget.reset(); } catch (reason) { setStatus(reason instanceof Error ? reason.message : "Upload failed"); } }
+  return <main className="min-h-screen bg-[#08080a] px-5 py-10 text-white"><div className="mx-auto max-w-2xl"><Link className="text-lg font-black" href="/"><span className="text-indigo-400">▶</span> TubeLite</Link><p className="mt-12 text-sm text-indigo-300">Creator studio</p><h1 className="mt-1 text-4xl font-bold">Upload a video</h1><p className="mt-3 text-zinc-400">MP4 or WebM up to 500 MB. Add a custom thumbnail to stand out.</p><form className="mt-9 space-y-5 rounded-3xl border border-white/10 bg-[#121217] p-6 sm:p-8" onSubmit={submit}><input required className="field" name="title" maxLength={255} placeholder="Video title" /><textarea className="field min-h-28 resize-y" name="description" placeholder="Tell viewers about your video" /><label className="block text-sm font-medium">Video file<input required className="mt-2 block w-full text-sm text-zinc-400 file:mr-4 file:rounded-lg file:border-0 file:bg-indigo-500 file:px-4 file:py-2 file:font-semibold file:text-white" name="video_file" type="file" accept="video/mp4,video/webm" /></label><label className="block text-sm font-medium">Thumbnail <span className="text-zinc-500">(optional)</span><input className="mt-2 block w-full text-sm text-zinc-400 file:mr-4 file:rounded-lg file:border-0 file:bg-zinc-700 file:px-4 file:py-2 file:font-semibold file:text-white" name="thumbnail_file" type="file" accept="image/jpeg,image/png,image/webp" /></label>{status && <p className="text-sm text-indigo-200">{status}</p>}<button className="rounded-xl bg-indigo-500 px-5 py-3 font-semibold hover:bg-indigo-400">Publish video</button></form></div></main>;
+}
