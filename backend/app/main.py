@@ -40,15 +40,15 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 from app.auth.router import router as auth_router    # Phase 3 ✅
 from app.videos.router import router as videos_router  # Phase 4 ✅
-# from app.users.router import router as users_router     # Phase 5
-# from app.comments.router import router as comments_router  # Phase 6
-# from app.likes.router import router as likes_router        # Phase 6
+from app.users.router import router as users_router
+from app.comments.router import router as comments_router
+from app.likes.router import router as likes_router
 
 app.include_router(auth_router,   prefix="/api/auth",   tags=["Auth"])
 app.include_router(videos_router, prefix="/api/videos", tags=["Videos"])
-# app.include_router(users_router,    prefix="/api/users",  tags=["Users"])
-# app.include_router(comments_router, prefix="/api",        tags=["Comments"])
-# app.include_router(likes_router,    prefix="/api/videos", tags=["Likes"])
+app.include_router(users_router,    prefix="/api/users",  tags=["Users"])
+app.include_router(comments_router, prefix="/api",        tags=["Comments"])
+app.include_router(likes_router,    prefix="/api/videos", tags=["Likes"])
 
 
 # ---------------------------------------------------------------------------

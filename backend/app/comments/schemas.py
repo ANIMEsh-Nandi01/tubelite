@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, field_validator
 
-from app.users.schemas import UserPublic
+from app.users.schemas import UserProfile
 
 
 class CommentCreate(BaseModel):
@@ -23,7 +23,7 @@ class CommentOut(BaseModel):
     id: str
     content: str
     created_at: datetime
-    author: UserPublic
+    author: UserProfile
 
     model_config = ConfigDict(from_attributes=True)
 

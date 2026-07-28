@@ -20,6 +20,18 @@ class UserPublic(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class UserProfile(BaseModel):
+    """Public channel information that deliberately excludes email."""
+
+    id: str
+    username: str
+    avatar_url: str | None
+    bio: str | None
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class UserUpdate(BaseModel):
     """Fields a user is allowed to update on their own profile."""
 
